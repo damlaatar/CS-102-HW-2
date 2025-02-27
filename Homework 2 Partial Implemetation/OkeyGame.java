@@ -33,10 +33,10 @@ public class OkeyGame {
      * this method assumes the tiles are already shuffled
      */
     public void distributeTilesToPlayers() {
+        int tileIndex = tiles.length-1;//where distribution starts from
         for(int i = 0; i < players.length; i++)
         {
             int tileNumber;//14 or 15 depending on i
-            int tileIndex = tiles.length-1;
             if(i == 0)
             {
                 tileNumber = 15;
@@ -48,8 +48,8 @@ public class OkeyGame {
             for(int t = tileIndex; t > tileIndex-tileNumber; t--)
             {
                 players[i].addTile(tiles[t]);
-                tileIndex -= tileNumber;
             }
+            tileIndex -= tileNumber;
         }
         Tile [] newTiles = new Tile[tiles.length-57];// 14+14+14+15
         for(int i = 0; i < tiles.length-57; i++)
