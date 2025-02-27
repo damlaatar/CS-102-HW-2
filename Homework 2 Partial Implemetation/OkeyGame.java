@@ -33,7 +33,30 @@ public class OkeyGame {
      * this method assumes the tiles are already shuffled
      */
     public void distributeTilesToPlayers() {
-
+        for(int i = 0; i < players.length; i++)
+        {
+            int tileNumber;//14 or 15 depending on i
+            int tileIndex = tiles.length-1;
+            if(i == 0)
+            {
+                tileNumber = 15;
+            }
+            else
+            {
+                tileNumber = 14;
+            }
+            for(int t = tileIndex; t > tileIndex-tileNumber; t--)
+            {
+                players[i].addTile(tiles[t]);
+                tileIndex -= tileNumber;
+            }
+        }
+        Tile [] newTiles = new Tile[tiles.length-57];// 14+14+14+15
+        for(int i = 0; i < tiles.length-57; i++)
+        {
+            newTiles[i] = tiles[i];
+        }
+        tiles = newTiles;
     }
 
     /*
@@ -42,7 +65,9 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getLastDiscardedTile() {
-        return null;
+        players[currentPlayerIndex].addTile(lastDiscardedTile);
+        //lastDiscardedTile will be updated to the one this user discards in dicardTile or discardTileForComputer
+        return lastDiscardedTile.toString();
     }
 
     /*
@@ -51,7 +76,22 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getTopTile() {
-        return null;
+        if(tiles.length != 0)
+        {
+            Tile topTile = tiles[tiles.length-1];
+            players[currentPlayerIndex].addTile(topTile);
+            Tile [] newTiles = new Tile[tiles.length-1];
+            for(int i = 0; i < tiles.length-1; i++)
+            {
+                newTiles[i] = tiles[i];
+            }
+            tiles = newTiles;//top tile has been removed 
+            return topTile.toString();
+        }
+        else//no tiles left to draw
+        {
+            return null;//will lead to game ending with a tie
+        }
     }
 
     /*
@@ -87,7 +127,7 @@ public class OkeyGame {
      * the single tiles and tiles that contribute to the smallest chains.
      */
     public void discardTileForComputer() {
-
+        
     }
 
     /*
@@ -96,7 +136,9 @@ public class OkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-
+        lastDiscardedTile = players[currentPlayerIndex].getAndRemoveTile(tileIndex);
+        //removes the tile from currentPlayer's tiles AND assigns it to lastDiscardedTile
+        displayDiscardInformation();
     }
 
     public void displayDiscardInformation() {
