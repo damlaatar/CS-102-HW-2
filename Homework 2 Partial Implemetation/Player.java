@@ -26,13 +26,30 @@ public class Player {
     }
 
     /*
-     * TODO: checks if this player's hand satisfies the winning condition
+     * checks if this player's hand satisfies the winning condition -done! 
      * to win this player should have 3 chains of length 4, extra tiles
      * does not disturb the winning condition
      * @return
      */
     public boolean isWinningHand() {
-        return false;
+        int validChains = 0;
+        int i = 0;
+        int currentChain = 0;
+        while ( i < 13 && validChains < 3) { // compares every tile to the next one
+            Tile first = playerTiles[ i ];
+            Tile second = playerTiles[ i + 1 ]; 
+            if ( first.getValue() == second.getValue() && first.getColor() != second.getColor() ) { // if tiles are same number but diff color
+                currentChain++; // increase the current chain
+                if ( currentChain == 4 ) { // if it's a chain of 4, count a valid chain 
+                    validChains++; 
+                }
+            } 
+            else if ( first.getValue() != second.getValue() ) { // if tile number is different, reset chain
+                currentChain = 0;
+            }
+            i++;
+        }
+        return validChains >= 3; // checks if player has at least 3 valid chains
     }
 
     public int findPositionOfTile(Tile t) {

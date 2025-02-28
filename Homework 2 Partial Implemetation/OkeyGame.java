@@ -1,3 +1,4 @@
+import java.util.Random;
 public class OkeyGame {
 
     Player[] players;
@@ -95,18 +96,24 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: should randomly shuffle the tiles array before game starts
+     * should randomly shuffle the tiles array before game starts -done!
      */
     public void shuffleTiles() {
-
+        Random rand = new Random();
+        for ( int i = tiles.length - 1; i > 0; i-- ) { // shuffles tiles with the fisher-yates algorithm
+            int j = rand.nextInt( i );
+            Tile temp = tiles[ j ];
+            tiles[ j ] = tiles[ i ];
+            tiles[ i ] = temp;
+        }
     }
 
     /*
-     * TODO: check if game still continues, should return true if current player
+     * check if game still continues, should return true if current player -done!
      * finished the game, use isWinningHand() method of Player to decide
      */
     public boolean didGameFinish() {
-        return false;
+        return players[ currentPlayerIndex ].isWinningHand(); // if player is winnning hand, game over
     }
 
     /*
