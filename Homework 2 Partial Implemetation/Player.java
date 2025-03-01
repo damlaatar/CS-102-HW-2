@@ -10,19 +10,57 @@ public class Player {
     }
 
     /*
-     * TODO: removes and returns the tile in given index
+     * DONE: removes and returns the tile in given index
      */
-    public Tile getAndRemoveTile(int index) {
-        return null;
+    public Tile getAndRemoveTile(int index) 
+    {
+        if (index < 0 || index >= numberOfTiles) 
+        {
+            return null; //if it's an invalid index
+        }
+        
+        Tile removedTile = playerTiles[index];
+        
+        //update after the removed one to fill the gap
+        for (int i = index; i < numberOfTiles - 1; i++) 
+        {
+            playerTiles[i] = playerTiles[i + 1]; //shift to the left
+        }
+        
+        playerTiles[numberOfTiles - 1] = null; //clear the last one
+        numberOfTiles--; //decrement tile amount
+        
+        return removedTile;
     }
 
     /*
-     * TODO: adds the given tile to the playerTiles in order
+     * DONE: adds the given tile to the playerTiles in order
      * should also update numberOfTiles accordingly.
      * make sure playerTiles are not more than 15 at any time
      */
-    public void addTile(Tile t) {
+    public void addTile(Tile t) 
+    {
+        if (numberOfTiles >= 15) 
+        {
+            System.out.println("Tiles are already at maximum capacity!"); //which is 15
+            return;
+        }
+        
+        // Find the correct position to insert the new tile 
+        int insertingPos = 0;
 
+        while (insertingPos < numberOfTiles && playerTiles[insertingPos] != null && playerTiles[insertingPos].compareTo(t) < 0) //if t is bigger
+        {
+            insertingPos++;
+        }
+        
+        for (int i = numberOfTiles; i > insertingPos; i--) 
+        {
+            playerTiles[i] = playerTiles[i - 1]; //shift to the right
+        }
+        
+        playerTiles[insertingPos] = t; //insert new tile into right position
+        numberOfTiles++; //increase tile amount
     }
 
     /*
