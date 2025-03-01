@@ -134,7 +134,61 @@ public class OkeyGame {
      * the single tiles and tiles that contribute to the smallest chains.
      */
     public void discardTileForComputer() {
+        Player currentPlayer = players[currentPlayerIndex];
+        Tile[] playerTiles = currentPlayer.getTiles();
+        int numTiles = currentPlayer.numberOfTiles;
         
+        boolean foundDuplicate = false;
+        for (int i = 0; i < numTiles - 1 && !foundDuplicate; i++){
+            for (int j = i + 1; j < numTiles && !foundDuplicate; j++){
+                if (playerTiles[i].getValue() == playerTiles[j].getValue() && playerTiles[i].getColor() == playerTiles[j].getColor()){
+                    lastDiscardedTile = currentPlayer.getAndRemoveTile(j);
+                    System.out.println(currentPlayer.getName() + " discards: " + lastDiscardedTile.toString());
+                    foundDuplicate = true;
+                }
+            }
+        }
+        
+        if (!foundDuplicate){
+            int[] valueCounts = new int[8];
+            
+            for (int i = 0; i < numTiles; i++){
+                int value = playerTiles[i].getValue();
+                valueCounts[value]++;
+            }
+            
+            boolean foundSingle = false;
+            for (int i = 0; i < numTiles && !foundSingle; i++){
+                int value = playerTiles[i].getValue();
+                if (valueCounts[value] == 1){
+                    lastDiscardedTile = currentPlayer.getAndRemoveTile(i);
+                    System.out.println(currentPlayer.getName() + " discards: " + lastDiscardedTile.toString());
+                    foundSingle = true;
+                }
+            }
+            
+            if (!foundSingle){
+                int[] chainPotentials = new int[numTiles];
+                
+                for (int i = 0; i < numTiles; i++) {
+                    for (int j = 0; j < numTiles; j++) {
+                        if (i != j && playerTiles[i].canFormChainWith(playerTiles[j])) {
+                            chainPotentials[i]++;
+                        }
+                    }
+                }
+                
+                int minPotentialIndex = 0;
+                for (int i = 1; i < numTiles; i++) {
+                    if (chainPotentials[i] < chainPotentials[minPotentialIndex]) {
+                        minPotentialIndex = i;
+                    }
+                }
+                
+                lastDiscardedTile = currentPlayer.getAndRemoveTile(minPotentialIndex);
+                System.out.println(currentPlayer.getName() + " discards: " + lastDiscardedTile.toString());
+            }
+        }
     }
 
     /*
