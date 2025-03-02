@@ -49,7 +49,10 @@ public class Player {
         // Find the correct position to insert the new tile 
         int insertingPos = 0;
 
-        while (insertingPos < numberOfTiles && t.compareTo(playerTiles[insertingPos])>0) //if t is bigger
+        while (insertingPos < numberOfTiles && 
+        (playerTiles[insertingPos].getValue() < t.getValue() || 
+        (playerTiles[insertingPos].getValue() == t.getValue() && 
+        playerTiles[insertingPos].colorNameToInt() < t.colorNameToInt()))) //corrected condition
         {
             insertingPos++;
         }
