@@ -124,7 +124,36 @@ public class OkeyGame {
      * the current status. Print whether computer picks from tiles or discarded ones.
      */
     public void pickTileForComputer() {
-
+        Player currentPlayer = players[currentPlayerIndex];
+        Tile[] playerTiles = currentPlayer.getTiles();
+        int numTiles = currentPlayer.numberOfTiles;
+        
+        boolean foundDuplicate = false;
+        for (int i = 0; i < numTiles - 1 && !foundDuplicate; i++){
+            if (playerTiles[i].getValue() == lastDiscardedTile.getValue() && playerTiles[i].getColor() == lastDiscardedTile.getColor()){   
+                foundDuplicate = true;
+            }
+        }
+        if (foundDuplicate) {
+            currentPlayer.addTile(tiles[tiles.length-1]);
+            System.out.println(currentPlayer.getName() + " took a tile from the pile.");
+        }
+        else {
+            int[] valueCounts = new int[8];
+            for (int i = 0; i < numTiles; i++){
+                int value = playerTiles[i].getValue();
+                valueCounts[value]++;
+            }
+            
+            if (valueCounts[lastDiscardedTile.getValue()] >= 2 && valueCounts[lastDiscardedTile.getValue()] < 5) {
+                currentPlayer.addTile(lastDiscardedTile);
+                System.out.println(currentPlayer.getName() + " took the discarded tile.");
+            }
+            else {
+                currentPlayer.addTile(tiles[tiles.length-1]);
+                System.out.println(currentPlayer.getName() + " took a tile from the pile.");
+            }
+        }
     }
 
     /*
