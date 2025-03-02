@@ -139,35 +139,37 @@ public class OkeyGame {
      */
     public void pickTileForComputer() {
         Player currentPlayer = players[currentPlayerIndex];
-        Tile[] playerTiles = currentPlayer.getTiles();
-        int numTiles = currentPlayer.numberOfTiles;
-        if (lastDiscardedTile != null){
-            boolean foundDuplicate = false;
-            for (int i = 0; i < numTiles - 1 && !foundDuplicate; i++){
-                if (playerTiles[i].getValue() == lastDiscardedTile.getValue() && playerTiles[i].getColor() == lastDiscardedTile.getColor()){   
-                    foundDuplicate = true;
-                }
+    
+        if (tiles.length == 0) {
+            return;
+        }
+        
+        boolean takeDiscarded = false;
+        
+        if (lastDiscardedTile != null) {
+            Tile[] playerTiles = currentPlayer.getTiles();
+            int numTiles = currentPlayer.numberOfTiles;
+            
+            int[] valueCounts = new int[8];
+            for (int i = 0; i < numTiles; i++) {
+                int value = playerTiles[i].getValue();
+                valueCounts[value]++;
             }
-            if (foundDuplicate && getTopTile(null) != null) {
-                currentPlayer.addTile(tiles[tiles.length-1]);
-                System.out.println(currentPlayer.getName() + " took a tile from the pile.");
+            
+            if (valueCounts[lastDiscardedTile.getValue()] >= 2) {
+                takeDiscarded = true;
             }
-            else {
-                int[] valueCounts = new int[8];
-                for (int i = 0; i < numTiles; i++){
-                    int value = playerTiles[i].getValue();
-                    valueCounts[value]++;
-                }
-                
-                if (valueCounts[lastDiscardedTile.getValue()] >= 2 && valueCounts[lastDiscardedTile.getValue()] < 5) {
-                    currentPlayer.addTile(lastDiscardedTile);
-                    System.out.println(currentPlayer.getName() + " took the discarded tile.");
-                }
-                else {
-                    currentPlayer.addTile(tiles[tiles.length-1]);
-                    System.out.println(currentPlayer.getName() + " took a tile from the pile.");
-                }
-            }
+        }
+        
+        if (takeDiscarded && lastDiscardedTile != null) {
+            Tile tileToAdd = lastDiscardedTile;
+            lastDiscardedTile = null; 
+            currentPlayer.addTile(tileToAdd);
+            System.out.println(currentPlayer.getName() + " took the discarded tile.");
+        } 
+        else {
+            String pickedTile = getTopTile(currentPlayer);
+            System.out.println(currentPlayer.getName() + " took a tile from the pile: " + pickedTile);
         }
     }
 
@@ -278,5 +280,4 @@ public class OkeyGame {
             players[index] = new Player(name);
         }
     }
-
 }

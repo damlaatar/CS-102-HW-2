@@ -8,7 +8,7 @@ public class ApplicationMain {
 
         int choice = 0;
         do{
-            System.out.println("Choose playing option:\n1-With 3 computer players\n2- 4 computer players");
+            System.out.println("Choose playing option:\n1- With 3 computer players\n2- 4 computer players");
             if(sc.hasNextInt())
             {
                 choice = sc.nextInt(); sc.nextLine();
@@ -121,15 +121,20 @@ public class ApplicationMain {
                 {
                     // computer picks a tile from tile stack or other player's discard
                     game.pickTileForComputer();
+                    game.displayCurrentPlayersTiles();
                 }
             
-                gameContinues = !game.didGameFinish();
+                gameContinues = !game.didGameFinish() && game.getTopTile(game.getCurrentPlayer())!=null;
 
                 if(gameContinues) {
                     // if game did not end computer should discard
                     game.discardTileForComputer();
                     game.passTurnToNextPlayer();
                     firstTurn = false;
+                    if (game.getTopTile(null) == null && !game.didGameFinish() ){
+                        System.out.println("There is no tile left in pile. The game ended in tie. There is no winner!");
+                        gameContinues = false;
+                    }
                 }
                 else{
                     // current computer character wins
@@ -137,5 +142,6 @@ public class ApplicationMain {
                 }
             }
         }
+        sc.close();
     }
 }
