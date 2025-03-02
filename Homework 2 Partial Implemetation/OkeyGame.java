@@ -28,7 +28,7 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: distributes the starting tiles to the players
+     * DONE: distributes the starting tiles to the players
      * player at index 0 gets 15 tiles and starts first
      * other players get 14 tiles
      * this method assumes the tiles are already shuffled
@@ -61,7 +61,7 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: get the last discarded tile for the current player
+     * DONE: get the last discarded tile for the current player
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
@@ -72,26 +72,40 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: get the top tile from tiles array for the current player
+     * DONE: get the top tile from tiles array for the current player
      * that tile is no longer in the tiles array (this simulates picking up the top tile)
      * it should return the toString method of the tile so that we can print what we picked
      */
-    public String getTopTile() {
-        if(tiles.length != 0)
+    public String getTopTile(Player aPlayer) {
+        if(aPlayer != null)
         {
-            Tile topTile = tiles[tiles.length-1];
-            players[currentPlayerIndex].addTile(topTile);
-            Tile [] newTiles = new Tile[tiles.length-1];
-            for(int i = 0; i < tiles.length-1; i++)
+            if(tiles.length != 0)
             {
-                newTiles[i] = tiles[i];
+                Tile topTile = tiles[tiles.length-1];
+                aPlayer.addTile(topTile);
+                Tile [] newTiles = new Tile[tiles.length-1];
+                for(int i = 0; i < tiles.length-1; i++)
+                {
+                    newTiles[i] = tiles[i];
+                }
+                tiles = newTiles;//top tile has been removed 
+                return topTile.toString();
             }
-            tiles = newTiles;//top tile has been removed 
-            return topTile.toString();
+            else//no tiles left to draw
+            {
+                return null;//will lead to game ending with a tie
+            }
         }
-        else//no tiles left to draw
+        else// player is null, called just to check tie
         {
-            return null;//will lead to game ending with a tie
+            if(tiles.length==0)
+            {
+                return null;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 
@@ -117,7 +131,7 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: Pick a tile for the current computer player using one of the following:
+     * DONE: Pick a tile for the current computer player using one of the following:
      * - picking from the tiles array using getTopTile()
      * - picking from the lastDiscardedTile using getLastDiscardedTile()
      * You should consider if the discarded tile is useful for the computer in
@@ -134,7 +148,7 @@ public class OkeyGame {
                     foundDuplicate = true;
                 }
             }
-            if (foundDuplicate && getTopTile() != null) {
+            if (foundDuplicate && getTopTile(null) != null) {
                 currentPlayer.addTile(tiles[tiles.length-1]);
                 System.out.println(currentPlayer.getName() + " took a tile from the pile.");
             }
@@ -158,7 +172,7 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: Current computer player will discard the least useful tile.
+     * DONE: Current computer player will discard the least useful tile.
      * this method should print what tile is discarded since it should be
      * known by other players. You may first discard duplicates and then
      * the single tiles and tiles that contribute to the smallest chains.
@@ -222,7 +236,7 @@ public class OkeyGame {
     }
 
     /*
-     * TODO: discards the current player's tile at given index
+     * DONE: discards the current player's tile at given index
      * this should set lastDiscardedTile variable and remove that tile from
      * that player's tiles
      */
@@ -244,6 +258,11 @@ public class OkeyGame {
 
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
+    }
+
+    public Player getCurrentPlayer()
+    {
+        return players[currentPlayerIndex];
     }
 
       public String getCurrentPlayerName() {

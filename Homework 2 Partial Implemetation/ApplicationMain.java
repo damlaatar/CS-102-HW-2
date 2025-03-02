@@ -46,7 +46,7 @@ public class ApplicationMain {
         boolean gameContinues = true;
         int playerChoice = -1;
 
-        while(gameContinues && game.getTopTile() != null) {
+        while(gameContinues && game.getTopTile(null) != null) {
             
             int currentPlayer = game.getCurrentPlayerIndex();
             System.out.println(game.getCurrentPlayerName() + "'s turn.");
@@ -74,7 +74,7 @@ public class ApplicationMain {
                 // after the first turn we can pick up
                 if(!firstTurn) {
                     if(playerChoice == 1) {
-                        System.out.println("You picked up: " + game.getTopTile());
+                        System.out.println("You picked up: " + game.getTopTile(game.getCurrentPlayer()));
                         firstTurn = false;
                     }
                     else if(playerChoice == 2) {
@@ -117,15 +117,19 @@ public class ApplicationMain {
                     game.displayCurrentPlayersTiles();
                 }
 
-                // computer picks a tile from tile stack or other player's discard
-                game.pickTileForComputer();
-
+                if(!firstTurn)
+                {
+                    // computer picks a tile from tile stack or other player's discard
+                    game.pickTileForComputer();
+                }
+            
                 gameContinues = !game.didGameFinish();
 
                 if(gameContinues) {
                     // if game did not end computer should discard
                     game.discardTileForComputer();
                     game.passTurnToNextPlayer();
+                    firstTurn = false;
                 }
                 else{
                     // current computer character wins
