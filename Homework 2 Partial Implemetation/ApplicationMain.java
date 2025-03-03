@@ -56,23 +56,17 @@ public class ApplicationMain {
                 game.displayCurrentPlayersTiles();
                 game.displayDiscardInformation();
 
-                System.out.println("What will you do?");
+                
 
                 if(!firstTurn) {
                     // after the first turn, player may pick from tile stack or last player's discard
+                    System.out.println("What will you do?");
                     System.out.println("1. Pick From Tiles");
                     System.out.println("2. Pick From Discard");
-                }
-                else{
-                    // on first turn the starting player does not pick up new tile
-                    System.out.println("1. Discard Tile");
-                }
 
-                System.out.print("Your choice: ");
-                playerChoice = sc.nextInt();
+                    System.out.print("Your choice: ");
+                    playerChoice = sc.nextInt();
 
-                // after the first turn we can pick up
-                if(!firstTurn) {
                     if(playerChoice == 1) {
                         System.out.println("You picked up: " + game.getTopTile(game.getCurrentPlayer()));
                         firstTurn = false;
