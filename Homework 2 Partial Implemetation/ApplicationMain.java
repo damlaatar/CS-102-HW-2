@@ -129,12 +129,17 @@ public class ApplicationMain {
                     firstTurn = false;
                     if (game.getTopTile(null) == null && !game.didGameFinish() ){
                         System.out.println("There is no tile left in pile. The game ended in tie. There is no winner!");
+                        System.out.println("The players' tiles are:");
+                        for (Player p : game.getPlayers()){
+                            p.displayTiles();
+                        }
                         gameContinues = false;
                     }
                 }
                 else{
                     // current computer character wins
                     System.out.println(game.getCurrentPlayerName() + " wins.");
+                    game.displayCurrentPlayersTiles();
                 }
             }
         }

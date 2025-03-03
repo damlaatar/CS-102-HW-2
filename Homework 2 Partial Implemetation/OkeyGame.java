@@ -280,4 +280,8 @@ public class OkeyGame {
             players[index] = new Player(name);
         }
     }
+    
+    public Player[] getPlayers(){
+        return players;
+    }
 }
