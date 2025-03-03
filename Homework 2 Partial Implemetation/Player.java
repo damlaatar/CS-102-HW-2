@@ -42,7 +42,6 @@ public class Player {
     {
         if (numberOfTiles >= 15) 
         {
-            System.out.println("Tiles are already at maximum capacity!"); //which is 15
             return;
         }
         
@@ -75,7 +74,7 @@ public class Player {
     public boolean isWinningHand() {
         int validChains = 0;
         int i = 0;
-        int currentChain = 0;
+        int currentChain = 1;
         while ( i < 13 && validChains < 3) { // compares every tile to the next one
             Tile first = playerTiles[ i ];
             Tile second = playerTiles[ i + 1 ]; 
@@ -86,7 +85,7 @@ public class Player {
                 }
             } 
             else if ( first.getValue() != second.getValue() ) { // if tile number is different, reset chain
-                currentChain = 0;
+                currentChain = 1;
             }
             i++;
         }
