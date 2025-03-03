@@ -64,9 +64,11 @@ public class ApplicationMain {
                     System.out.println("1. Pick From Tiles");
                     System.out.println("2. Pick From Discard");
 
-                    System.out.print("Your choice: ");
-                    playerChoice = sc.nextInt();
-
+                    do {
+                        System.out.print("Your choice: ");
+                        playerChoice = sc.nextInt();
+                    } while ( playerChoice > 2 || playerChoice < 1 );
+                    
                     if(playerChoice == 1) {
                         System.out.println("You picked up: " + game.getTopTile(game.getCurrentPlayer()));
                         firstTurn = false;
@@ -120,7 +122,7 @@ public class ApplicationMain {
                     }
                 }
             
-                gameContinues = !game.didGameFinish() && game.getTopTile(game.getCurrentPlayer())!=null;
+                gameContinues = !game.didGameFinish() && game.getTopTile(null)!=null;
 
                 if(gameContinues) {
                     // if game did not end computer should discard
