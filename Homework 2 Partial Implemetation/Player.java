@@ -72,16 +72,24 @@ public class Player {
      * @return
      */
     public boolean isWinningHand() {
+        int max;
+        if ( playerTiles[ 14 ] != null ) {
+            max = 14;
+        }
+        else {
+            max = 13;
+        }
         int validChains = 0;
         int i = 0;
         int currentChain = 1;
-        while ( i < 13 && validChains < 3) { // compares every tile to the next one
+        while ( i < max && validChains < 3) { // compares every tile to the next one
             Tile first = playerTiles[ i ];
             Tile second = playerTiles[ i + 1 ]; 
             if ( first.getValue() == second.getValue() && first.getColor() != second.getColor() ) { // if tiles are same number but diff color
                 currentChain++; // increase the current chain
                 if ( currentChain == 4 ) { // if it's a chain of 4, count a valid chain 
                     validChains++; 
+                    currentChain = 1;
                 }
             } 
             else if ( first.getValue() != second.getValue() ) { // if tile number is different, reset chain
